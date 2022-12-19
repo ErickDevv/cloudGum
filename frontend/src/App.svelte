@@ -1,19 +1,12 @@
 <script>
-const ip = ''
-const action = `http://${ip}:5050/upload`
+  const action = ``;
 </script>
 
 <main>
-  <form 
-
-  href='uploadForm' 
-  id='uploadForm' 
-  action={action}
-  method='post' 
-  encType="multipart/form-data">
-    <input type="file" name="sampleFile" />
-    <input type='submit' value='Upload!' />
-</form> 
+  <form {action} method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <input type="submit" value="Upload" />
+  </form>
 </main>
 
 <style>
