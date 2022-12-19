@@ -1,5 +1,14 @@
-# *cloudGum*
+# cloudGum
 
-## **What is** cloudGum? 🤔
-
-### It's a web server written with nodejs and express that allows receiving files sent from the frontend created with svelte.
+## cloudGum is a simple way to receive files through **svelte** and **express** server.
+---
+---
+## - Usage
+### 1. Clone the repository
+```bash
+git clone https://github.com/ErickDevv/cloudGum
+```
+### 2. Install dependencies
+```bash
+npm install
+```
