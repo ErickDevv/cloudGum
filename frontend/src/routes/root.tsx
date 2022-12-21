@@ -1,6 +1,8 @@
-
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
+const route = import.meta.env.VITE_URL
 
 const Root = () => {
     const [user, setUser] = useState('')
@@ -9,7 +11,9 @@ const Root = () => {
     const navigate = useNavigate()
 
     const handleSubmit = () => {
-        fetch('', {
+        console.log(route);
+        
+        fetch(`${route}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -32,6 +36,7 @@ const Root = () => {
                 setPassword((document.querySelector('.password') as HTMLInputElement).value)
             }} />
             <button type="submit" onClick={handleSubmit}>Login</button>
+            <p>Don't have an account? <Link to="/register"></Link></p>
         </form>
     </>
 }
