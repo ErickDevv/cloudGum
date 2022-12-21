@@ -1,6 +1,6 @@
 # cloudGum
 
-### cloudGum is a simple way to receive files through **svelte** and **express** server.
+### cloud in the palm of your hand.
 ---
 ---
 ## - Usage
