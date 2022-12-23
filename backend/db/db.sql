@@ -1,64 +1,106 @@
 CREATE DATABASE cloudGum;
 
-USE cloudGum;
-
-CREATE TABLE `User` (
+USE `cloudGum`;
+CREATE TABLE `cloudGum`.`User`  (
 	idUser int UNSIGNED AUTO_INCREMENT NOT NULL,
 	`user` char(16) NOT NULL,
-    `password` char(16) NOT NULL,
-    PRIMARY KEY (idUser, `password`)
+    `password` char(16) NOT NULL UNIQUE,
+    PRIMARY KEY (idUser)
 );
-CREATE TABLE `File`(
+USE `cloudGum`;
+CREATE TABLE `cloudGum`.`File`(
 	idFile int UNSIGNED AUTO_INCREMENT NOT NULL,
     `name` char(32) NOT NULL,
     url TEXT(2048) NOT NULL,
     PRIMARY KEY (idFile, `name`)
 );
-CREATE TABLE User_Has_File(
-	idUser INT UNSIGNED NOT NULL,
-    idFile INT UNSIGNED NOT NULL,
-    PRIMARY KEY(idUser, idFile),
+USE `cloudGum`;
+CREATE TABLE `cloudGum`.`User_Has_File`(
+	idUser INT UNSIGNED,
+    idFile INT UNSIGNED UNIQUE,
     FOREIGN KEY (idUser) REFERENCES `User` (idUser),
     FOREIGN KEY (idFile) REFERENCES `File` (idFile)
 );
+USE `cloudGum`;
+CREATE TABLE `cloudGum`.`Relation`(
+	`name` CHAR(16),
+	idNew INT
+);
+
+USE `cloudGum`;
+DROP function IF EXISTS `insert_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
 CREATE FUNCTION `insert_User` (newUser char(16), newPassword char(16))
 RETURNS INTEGER
 BEGIN
-	IF NOT EXISTS(SELECT (`user`) FROM `User` AS U WHERE U.`user` = newUser)
+	IF NOT EXISTS(SELECT `user` FROM `User` AS U WHERE U.`user` = newuser)
 		THEN
 			BEGIN
-				INSERT INTO `User` (`user`, `password`) VALUES (newUser, newPassword);
-                RETURN 1;
+				IF NOT EXISTS(SELECT `password` FROM `User` AS U WHERE U.`password` = newPassword)
+					THEN
+						BEGIN
+							INSERT INTO `User` (`user`, `password`) VALUES (newUser, newPassword);
+                            RETURN 1;
+                        END;
+					ELSE
+						BEGIN
+							RETURN 2;
+                        END;
+					END IF;
             END;
 		ELSE
 			BEGIN
-				RETURN 0;
+				RETURN 3;
             END;
 		END IF;
 END$$
 DELIMITER ;
 
+USE `cloudGum`;
+DROP function IF EXISTS `insert_File`;
+
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `insert_File` (newFile char(32), newUrl TEXT(2048))
+CREATE FUNCTION `insert_File` (`owner` CHAR(16), nameFile CHAR(32), newUrl TEXT(2048))
 RETURNS INTEGER
 BEGIN
-	IF NOT EXISTS(SELECT (`name`) FROM `File` AS F WHERE F.`name` = newFile and F.url = newUrl)
-    THEN
-		BEGIN
-			INSERT INTO Archivo (`name`, url) VALUES (newFile, newUrl);
-            RETURN 1;
-        END;
-	ELSE
-		BEGIN
-			RETURN 0;
-        END;
-	END IF;
+	IF NOT EXISTS(SELECT idFile FROM `File` as F WHERE F.`name` = nameFile AND F.url = newUrl)
+		THEN
+			BEGIN
+                IF NOT EXISTS(SELECT idFile FROM File AS F WHERE F.name = name)
+					THEN
+						BEGIN
+							INSERT INTO `File` (`name`, url) VALUES (nameFile, newUrl);
+                
+                
+							INSERT INTO Relation (`name`, idNew) VALUES (`owner`, LAST_INSERT_ID());
+                
+							INSERT INTO User_Has_File (idUser, idFile) 
+							SELECT U.idUser, R.idNew FROM `User` AS U
+							INNER JOIN Relation AS R
+							ON R.`name` = U.`user`
+							WHERE R.`name` = `owner` AND R.idNew = LAST_INSERT_ID();
+                
+							RETURN 1;
+                        END;
+					ELSE
+						BEGIN
+							RETURN 2;
+                        END;
+					END IF;
+            END;
+		ELSE
+			BEGIN
+				RETURN 3;
+            END;
+		END IF;
 END$$
 DELIMITER ;
+
+USE `cloudGum`;
+DROP function IF EXISTS `validation_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
@@ -78,34 +120,8 @@ BEGIN
 END$$
 DELIMITER ;
 
-DELIMITER $$
-USE `cloudGum`$$
-CREATE FUNCTION `assig_File` (idUser int, idFile int)
-RETURNS INTEGER
-BEGIN
-	IF (EXISTS(SELECT idUser FROM `User` AS U WHERE U.idUser = idUser) 
-		AND EXISTS(SELECT idFile FROM `File` AS F WHERE F.idFile = idFile))
-		THEN
-			BEGIN
-				IF NOT EXISTS(SELECT idUser FROM User_Has_File as UHF WHERE UHF.idUser = idUser AND UHF.idFile = idFile)
-					THEN
-						BEGIN
-							INSERT INTO User_Has_File (idUser, idFile) VALUES (idUser, idFile);
-                            RETURN 1;
-                        END;
-					ELSE
-						BEGIN
-							RETURN 2;
-                        END;
-					END IF;
-            END;
-		ELSE
-			BEGIN
-				RETURN 3;
-            END;
-		END IF;
-END$$
-DELIMITER ;
+USE `cloudGum`;
+DROP function IF EXISTS `file_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
@@ -128,3 +144,5 @@ BEGIN
 	END IF;
 END$$
 DELIMITER ;
+
+SET GLOBAL event_scheduler = ON;
