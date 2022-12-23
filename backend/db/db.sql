@@ -74,7 +74,7 @@ BEGIN
 						BEGIN
 							INSERT INTO `File` (`name`, url) VALUES (nameFile, newUrl);
                 
-                
+							TRUNCATE TABLE Relation;
 							INSERT INTO Relation (`name`, idNew) VALUES (`owner`, LAST_INSERT_ID());
                 
 							INSERT INTO User_Has_File (idUser, idFile) 
@@ -152,4 +152,6 @@ SET GLOBAL event_scheduler = 1;
 CREATE EVENT clear_Trmporal_Records
 ON SCHEDULE EVERY 1 DAY STARTS CURRENT_TIMESTAMP
 DO TRUNCATE TABLE Relation;
+
+https://stackoverflow.com/questions/26767899/mysql-event-scheduler-grant-super-privileges-not-working
 */
