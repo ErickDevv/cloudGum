@@ -49,7 +49,6 @@ CALL file_User('admin1');
 	The only parameter received is the name of the user.
     You get the files that belong to that user.
 */
-
 SELECT * FROM `User`;
 SELECT * FROM `File`;
 SELECT * FROM User_Has_File;

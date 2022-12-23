@@ -126,21 +126,12 @@ DELIMITER $$
 USE `cloudGum`$$
 CREATE PROCEDURE `file_User` (in inUser CHAR(16))
 BEGIN
-	IF EXISTS(SELECT (`user`) FROM `User` as U WHERE U.`user` = inUser)
-		THEN
-			BEGIN
-				SELECT U.`user` AS Usuario, F.`name` AS Nombre, F.url AS URL FROM `User` AS U
-                INNER JOIN User_Has_File AS UHF
-                ON UHF.idUser = U.idUser
-                INNER JOIN `File` AS F
-                ON F.idFile = UHF.idFile
-                WHERE U.`user` = inUser;
-            END;
-		ELSE
-			BEGIN
-            
-            END;
-	END IF;
+	SELECT U.`user` AS Usuario, F.`name` AS Nombre, F.url AS URL FROM `User` AS U
+	INNER JOIN User_Has_File AS UHF
+	ON UHF.idUser = U.idUser
+	INNER JOIN `File` AS F
+	ON F.idFile = UHF.idFile
+	WHERE U.`user` = inUser;
 END$$
 DELIMITER ;
 
