@@ -17,7 +17,7 @@ CREATE TABLE `cloudGum`.`File`(
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`User_Has_File`(
 	idUser INT UNSIGNED,
-    idFile INT UNSIGNED UNIQUE,
+    idFile INT UNSIGNED PRIMARY KEY,
     FOREIGN KEY (idUser) REFERENCES `User` (idUser),
     FOREIGN KEY (idFile) REFERENCES `File` (idFile)
 );
@@ -145,4 +145,11 @@ BEGIN
 END$$
 DELIMITER ;
 
-SET GLOBAL event_scheduler = ON;
+/*
+USE `cloudGum`;
+SET GLOBAL event_scheduler = 1;
+
+CREATE EVENT clear_Trmporal_Records
+ON SCHEDULE EVERY 1 DAY STARTS CURRENT_TIMESTAMP
+DO TRUNCATE TABLE Relation;
+*/
