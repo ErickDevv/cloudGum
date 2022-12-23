@@ -18,7 +18,7 @@ SELECT insert_User('admin4', '42mi2');
 
 SELECT insert_file('admin2232', 'FotoHalo2', 'urlEjemplo2');
 SELECT insert_file('admin1', 'FotoHalo4', 'urlEjemplo2');
-SELECT insert_file('admin2232', 'FotoHalo4', 'urlEjemplo2');
+SELECT insert_file('admin2232', 'FotoHalo9', 'urlEjemplo6');
 SELECT insert_file('admin2232', 'FotoHalo5', 'urlEjemplo2');
 SELECT insert_file('admin2232', 'FotoHalo6', 'urlEjemplo2');
 
@@ -32,7 +32,7 @@ SELECT insert_file('admin2232', 'FotoHalo6', 'urlEjemplo2');
         3 = The record already exists
 */
 
-SELECT validation_User('admi1', '42mi1231');
+SELECT validation_User('admin1', '42mi1231');
 
 /*
 	The first parameter is the user
