@@ -10,14 +10,14 @@ CREATE TABLE `cloudGum`.`User`  (
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`File`(
 	idFile int UNSIGNED AUTO_INCREMENT NOT NULL,
-    `name` char(32) NOT NULL,
+    `name` char(32) UNIQUE NOT NULL,
     url TEXT(2048) NOT NULL,
-    PRIMARY KEY (idFile, `name`)
+    PRIMARY KEY (idFile)
 );
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`User_Has_File`(
 	idUser INT UNSIGNED,
-    idFile INT UNSIGNED PRIMARY KEY,
+    idFile INT UNSIGNED UNIQUE,
     FOREIGN KEY (idUser) REFERENCES `User` (idUser),
     FOREIGN KEY (idFile) REFERENCES `File` (idFile)
 );
@@ -69,12 +69,11 @@ BEGIN
 	IF NOT EXISTS(SELECT idFile FROM `File` as F WHERE F.`name` = nameFile AND F.url = newUrl)
 		THEN
 			BEGIN
-                IF NOT EXISTS(SELECT idFile FROM File AS F WHERE F.name = name)
+                IF NOT EXISTS(SELECT idFile FROM `File` AS F WHERE F.`name` = namefile)
 					THEN
 						BEGIN
 							INSERT INTO `File` (`name`, url) VALUES (nameFile, newUrl);
                 
-							TRUNCATE TABLE Relation;
 							INSERT INTO Relation (`name`, idNew) VALUES (`owner`, LAST_INSERT_ID());
                 
 							INSERT INTO User_Has_File (idUser, idFile) 
@@ -127,21 +126,12 @@ DELIMITER $$
 USE `cloudGum`$$
 CREATE PROCEDURE `file_User` (in inUser CHAR(16))
 BEGIN
-	IF EXISTS(SELECT (`user`) FROM `User` as U WHERE U.`user` = inUser)
-		THEN
-			BEGIN
-				SELECT U.idUser AS ID, U.`user` AS Usuario, F.`name` AS Nombre, F.url AS URL FROM `User` AS U
-                INNER JOIN User_Has_File AS UHF
-                ON UHF.idUser = U.idUser
-                INNER JOIN `File` AS F
-                ON F.idFile = UHF.idFile
-                WHERE U.`user` = inUser;
-            END;
-		ELSE
-			BEGIN
-            
-            END;
-	END IF;
+	SELECT U.`user` AS Usuario, F.`name` AS Nombre, F.url AS URL FROM `User` AS U
+	INNER JOIN User_Has_File AS UHF
+	ON UHF.idUser = U.idUser
+	INNER JOIN `File` AS F
+	ON F.idFile = UHF.idFile
+	WHERE U.`user` = inUser;
 END$$
 DELIMITER ;
 
