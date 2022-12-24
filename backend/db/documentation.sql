@@ -57,6 +57,7 @@ SELECT * FROM User_Has_File;
 SELECT * FROM Relation;
 
 
+
 /*
     Everything works correctly, in case of an error when creating the functions you can take a look at:
     https://stackoverflow.com/questions/26015160/deterministic-no-sql-or-reads-sql-data-in-its-declaration-and-binary-logging-i
