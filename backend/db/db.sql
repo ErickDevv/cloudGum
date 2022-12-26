@@ -82,6 +82,8 @@ BEGIN
 							ON R.`name` = U.`user`
 							WHERE R.`name` = `owner` AND R.idNew = LAST_INSERT_ID();
                 
+							DELETE FROM Relation AS R WHERE R.`name` = `owner`;
+                
 							RETURN 1;
                         END;
 					ELSE
