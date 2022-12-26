@@ -137,7 +137,7 @@ DELIMITER ;
 
 /*
 USE `cloudGum`;
-SET GLOBAL event_scheduler = 1;
+SET GLOBAL event_scheduler = ON;
 
 CREATE EVENT clear_Trmporal_Records
 ON SCHEDULE EVERY 1 DAY STARTS CURRENT_TIMESTAMP
