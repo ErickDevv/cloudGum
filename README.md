@@ -12,3 +12,11 @@ git clone https://github.com/ErickDevv/cloudGum
 ```bash
 npm install
 ```
+### 3. Configurations
+### **- Frontend**
+#### 1. Environment variables
+The frontend variables must be located in the *./frontend/.env* file and contain the following variables:
+```bash
+// server url
+VITE_URL=""
+```
