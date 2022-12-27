@@ -20,3 +20,14 @@ The frontend variables must be located in the *./frontend/.env* file and contain
 // server url
 VITE_URL=""
 ```
+
+### **- Backend**
+#### 1. Environment variables
+The backend variables must be located in the *./backend/.env* file and contain the following variables:
+```bash
+    PORT=
+    DATABASE_USER=""
+    DATABASE_HOST=""
+    DATABASE_PASSWORD=""
+    DATABASE_NAME=""
+    ACCESS_TOKEN_SECRET=""
