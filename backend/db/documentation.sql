@@ -12,8 +12,7 @@ SELECT insert_User('admin4', '42mi2');
     Note: Username and password cannot be repeated.
     Possible results:
 		1 = Everything was successful
-        2 = Password already exists
-        3 = The user already exists
+        0 = The user already exists
 */
 
 SELECT insert_file('admin2232', 'FotoHalo2', 'urlEjemplo2');

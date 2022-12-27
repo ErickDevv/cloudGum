@@ -3,8 +3,8 @@ CREATE DATABASE cloudGum;
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`User`  (
 	idUser int UNSIGNED AUTO_INCREMENT NOT NULL,
-	`user` char(16) NOT NULL,
-    `password` char(16) NOT NULL UNIQUE,
+	`user` char(16) NOT NULL UNIQUE,
+    `password` char(16) NOT NULL,
     PRIMARY KEY (idUser)
 );
 USE `cloudGum`;
@@ -38,21 +38,12 @@ BEGIN
 	IF NOT EXISTS(SELECT `user` FROM `User` AS U WHERE U.`user` = newuser)
 		THEN
 			BEGIN
-				IF NOT EXISTS(SELECT `password` FROM `User` AS U WHERE U.`password` = newPassword)
-					THEN
-						BEGIN
-							INSERT INTO `User` (`user`, `password`) VALUES (newUser, newPassword);
-                            RETURN 1;
-                        END;
-					ELSE
-						BEGIN
-							RETURN 2;
-                        END;
-					END IF;
+				INSERT INTO `User` (`user`, `password`) VALUES (newUser, newPassword);
+				RETURN 1;
             END;
 		ELSE
 			BEGIN
-				RETURN 3;
+				RETURN 0;
             END;
 		END IF;
 END$$
