@@ -1,5 +1,9 @@
 CREATE DATABASE cloudGum;
 
+/*
+SET GLOBAL log_bin_trust_function_creators = 1;
+*/
+
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`User`  (
 	idUser int UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -34,16 +38,18 @@ DELIMITER $$
 USE `cloudGum`$$
 CREATE FUNCTION `insert_User` (newUser char(16), newPassword char(16))
 RETURNS INTEGER
+READS SQL DATA
+DETERMINISTIC
 BEGIN
 	IF NOT EXISTS(SELECT `user` FROM `User` AS U WHERE U.`user` = newuser)
 		THEN
 			BEGIN
 				INSERT INTO `User` (`user`, `password`) VALUES (newUser, newPassword);
-				RETURN 1;
+				RETURN 0;
             END;
 		ELSE
 			BEGIN
-				RETURN 0;
+				RETURN 1;
             END;
 		END IF;
 END$$
@@ -56,11 +62,10 @@ DELIMITER $$
 USE `cloudGum`$$
 CREATE FUNCTION `insert_File` (`owner` CHAR(16), nameFile CHAR(32), newUrl TEXT(2048))
 RETURNS INTEGER
+READS SQL DATA
+DETERMINISTIC
 BEGIN
-	IF NOT EXISTS(SELECT idFile FROM `File` as F WHERE F.`name` = nameFile AND F.url = newUrl)
-		THEN
-			BEGIN
-                IF NOT EXISTS(SELECT idFile FROM `File` AS F WHERE F.`name` = namefile)
+	 IF NOT EXISTS(SELECT idFile FROM `File` AS F WHERE F.`name` = namefile)
 					THEN
 						BEGIN
 							INSERT INTO `File` (`name`, url) VALUES (nameFile, newUrl);
@@ -75,19 +80,13 @@ BEGIN
                 
 							DELETE FROM Relation AS R WHERE R.`name` = `owner`;
                 
-							RETURN 1;
+							RETURN 0;
                         END;
 					ELSE
 						BEGIN
-							RETURN 2;
+							RETURN 1;
                         END;
 					END IF;
-            END;
-		ELSE
-			BEGIN
-				RETURN 3;
-            END;
-		END IF;
 END$$
 DELIMITER ;
 
@@ -98,15 +97,17 @@ DELIMITER $$
 USE `cloudGum`$$
 CREATE FUNCTION `validation_User` (`user` CHAR(16), `password` CHAR(16))
 RETURNS INTEGER
+READS SQL DATA
+DETERMINISTIC
 BEGIN
 	IF EXISTS(SELECT * FROM `User` AS U WHERE U.`user` = `user` AND U.`password` = `password`)
 		THEN
 			BEGIN
-				RETURN 1;
+				RETURN 0;
             END;
 		ELSE
 			BEGIN
-				RETURN 0;
+				RETURN 1;
             END;
 		END IF;
 END$$

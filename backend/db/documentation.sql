@@ -11,8 +11,8 @@ SELECT insert_User('admin4', '42mi2');
     The second parameter is the password
     Note: Username and password cannot be repeated.
     Possible results:
-		1 = Everything was successful
-        0 = The user already exists
+		0 = Everything was successful
+        1 = The user already exists
 */
 
 SELECT insert_file('admin2232', 'FotoHalo2', 'urlEjemplo2');
@@ -26,9 +26,8 @@ SELECT insert_file('admin2232', 'FotoHalo6', 'urlEjemplo2');
     The second parameter is the name of the file. Which cannot be repeated.
     The third parameter is the link to the file. Which can be repeated
     Possible results:
-		1 = Successful
-        2 = The file name already exists
-        3 = The record already exists
+		0 = Successful
+        1 = The file name already exists
 */
 
 SELECT validation_User('admin1', '42mi1231');
@@ -37,8 +36,8 @@ SELECT validation_User('admin1', '42mi1231');
 	The first parameter is the user
     As a second parameter the password is received
     Possible results:
-		1 = You have access!
-        0 = Incorrect user or password!
+		0 = You have access!
+        1 = Incorrect user or password!
 */
 
 CALL file_User('admin2232');
