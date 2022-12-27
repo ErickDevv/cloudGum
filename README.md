@@ -25,7 +25,7 @@ VITE_URL=""
 #### 1. Environment variables
 The backend variables must be located in the *./backend/.env* file and contain the following variables:
 ```bash
-    PORT=
+    PORT=""
     DATABASE_USER=""
     DATABASE_HOST=""
     DATABASE_PASSWORD=""
