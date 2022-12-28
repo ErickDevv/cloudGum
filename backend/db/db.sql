@@ -7,8 +7,8 @@ SET GLOBAL log_bin_trust_function_creators = 1;
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`User`  (
 	idUser int UNSIGNED AUTO_INCREMENT NOT NULL,
-	`user` char(16) NOT NULL UNIQUE,
-    `password` char(16) NOT NULL,
+	`user` char(128) NOT NULL UNIQUE,
+    `password` char(128) NOT NULL,
     PRIMARY KEY (idUser)
 );
 USE `cloudGum`;
@@ -36,7 +36,7 @@ DROP function IF EXISTS `insert_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `insert_User` (newUser char(16), newPassword char(16))
+CREATE FUNCTION `insert_User` (newUser char(128), newPassword char(128))
 RETURNS INTEGER
 READS SQL DATA
 DETERMINISTIC
@@ -60,7 +60,7 @@ DROP function IF EXISTS `insert_File`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `insert_File` (`owner` CHAR(16), nameFile CHAR(32), newUrl TEXT(2048))
+CREATE FUNCTION `insert_File` (`owner` CHAR(128), nameFile CHAR(32), newUrl TEXT(2048))
 RETURNS INTEGER
 READS SQL DATA
 DETERMINISTIC
@@ -95,7 +95,7 @@ DROP function IF EXISTS `validation_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `validation_User` (`user` CHAR(16), `password` CHAR(16))
+CREATE FUNCTION `validation_User` (`user` CHAR(128), `password` CHAR(128))
 RETURNS INTEGER
 READS SQL DATA
 DETERMINISTIC
@@ -118,7 +118,7 @@ DROP function IF EXISTS `file_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE PROCEDURE `file_User` (in inUser CHAR(16))
+CREATE PROCEDURE `file_User` (in inUser CHAR(128))
 BEGIN
 	SELECT U.`user` AS Usuario, F.`name` AS Nombre, F.url AS URL FROM `User` AS U
 	INNER JOIN User_Has_File AS UHF
