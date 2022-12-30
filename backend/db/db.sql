@@ -1,10 +1,14 @@
 CREATE DATABASE cloudGum;
 
+/*
+SET GLOBAL log_bin_trust_function_creators = 1;
+*/
+
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`User`  (
 	idUser int UNSIGNED AUTO_INCREMENT NOT NULL,
-	`user` char(16) NOT NULL,
-    `password` char(16) NOT NULL UNIQUE,
+	`user` char(32) NOT NULL UNIQUE,
+    `password` char(128) NOT NULL,
     PRIMARY KEY (idUser)
 );
 USE `cloudGum`;
@@ -23,7 +27,7 @@ CREATE TABLE `cloudGum`.`User_Has_File`(
 );
 USE `cloudGum`;
 CREATE TABLE `cloudGum`.`Relation`(
-	`name` CHAR(16),
+	`name` CHAR(32),
 	idNew INT
 );
 
@@ -32,27 +36,20 @@ DROP function IF EXISTS `insert_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `insert_User` (newUser char(16), newPassword char(16))
+CREATE FUNCTION `insert_User` (newUser char(32), newPassword char(128))
 RETURNS INTEGER
+READS SQL DATA
+DETERMINISTIC
 BEGIN
 	IF NOT EXISTS(SELECT `user` FROM `User` AS U WHERE U.`user` = newuser)
 		THEN
 			BEGIN
-				IF NOT EXISTS(SELECT `password` FROM `User` AS U WHERE U.`password` = newPassword)
-					THEN
-						BEGIN
-							INSERT INTO `User` (`user`, `password`) VALUES (newUser, newPassword);
-                            RETURN 1;
-                        END;
-					ELSE
-						BEGIN
-							RETURN 2;
-                        END;
-					END IF;
+				INSERT INTO `User` (`user`, `password`) VALUES (newUser, newPassword);
+				RETURN 0;
             END;
 		ELSE
 			BEGIN
-				RETURN 3;
+				RETURN 1;
             END;
 		END IF;
 END$$
@@ -63,13 +60,12 @@ DROP function IF EXISTS `insert_File`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `insert_File` (`owner` CHAR(16), nameFile CHAR(32), newUrl TEXT(2048))
+CREATE FUNCTION `insert_File` (`owner` CHAR(32), nameFile CHAR(32), newUrl TEXT(2048))
 RETURNS INTEGER
+READS SQL DATA
+DETERMINISTIC
 BEGIN
-	IF NOT EXISTS(SELECT idFile FROM `File` as F WHERE F.`name` = nameFile AND F.url = newUrl)
-		THEN
-			BEGIN
-                IF NOT EXISTS(SELECT idFile FROM `File` AS F WHERE F.`name` = namefile)
+	 IF NOT EXISTS(SELECT idFile FROM `File` AS F WHERE F.`name` = namefile)
 					THEN
 						BEGIN
 							INSERT INTO `File` (`name`, url) VALUES (nameFile, newUrl);
@@ -82,40 +78,26 @@ BEGIN
 							ON R.`name` = U.`user`
 							WHERE R.`name` = `owner` AND R.idNew = LAST_INSERT_ID();
                 
-							RETURN 1;
+							DELETE FROM Relation AS R WHERE R.`name` = `owner`;
+                
+							RETURN 0;
                         END;
 					ELSE
 						BEGIN
-							RETURN 2;
+							RETURN 1;
                         END;
 					END IF;
-            END;
-		ELSE
-			BEGIN
-				RETURN 3;
-            END;
-		END IF;
 END$$
 DELIMITER ;
 
 USE `cloudGum`;
-DROP function IF EXISTS `validation_User`;
+DROP procedure IF EXISTS `validation_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `validation_User` (`user` CHAR(16), `password` CHAR(16))
-RETURNS INTEGER
+CREATE PROCEDURE `validation_User` (`user` CHAR(32))
 BEGIN
-	IF EXISTS(SELECT * FROM `User` AS U WHERE U.`user` = `user` AND U.`password` = `password`)
-		THEN
-			BEGIN
-				RETURN 1;
-            END;
-		ELSE
-			BEGIN
-				RETURN 0;
-            END;
-		END IF;
+	SELECT `password` FROM `User` AS U WHERE U.`user` = `user`;
 END$$
 DELIMITER ;
 
@@ -124,7 +106,7 @@ DROP function IF EXISTS `file_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE PROCEDURE `file_User` (in inUser CHAR(16))
+CREATE PROCEDURE `file_User` (in inUser CHAR(32))
 BEGIN
 	SELECT U.`user` AS Usuario, F.`name` AS Nombre, F.url AS URL FROM `User` AS U
 	INNER JOIN User_Has_File AS UHF
