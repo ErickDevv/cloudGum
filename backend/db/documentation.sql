@@ -30,14 +30,11 @@ SELECT insert_file('admin2232', 'FotoHalo6', 'urlEjemplo2');
         1 = The file name already exists
 */
 
-SELECT validation_User('admin1', '42mi1231');
+CALL validation_User('admin11');
 
 /*
-	The first parameter is the user
-    As a second parameter the password is received
-    Possible results:
-		0 = You have access!
-        1 = Incorrect user or password!
+	The only parameter received is the name of the user.
+    you get the user's password, if you get null it means that the user does not exist.
 */
 
 CALL file_User('admin2232');

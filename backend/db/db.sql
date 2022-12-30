@@ -91,25 +91,13 @@ END$$
 DELIMITER ;
 
 USE `cloudGum`;
-DROP function IF EXISTS `validation_User`;
+DROP procedure IF EXISTS `validation_User`;
 
 DELIMITER $$
 USE `cloudGum`$$
-CREATE FUNCTION `validation_User` (`user` CHAR(32), `password` CHAR(128))
-RETURNS INTEGER
-READS SQL DATA
-DETERMINISTIC
+CREATE PROCEDURE `validation_User` (`user` CHAR(32))
 BEGIN
-	IF EXISTS(SELECT * FROM `User` AS U WHERE U.`user` = `user` AND U.`password` = `password`)
-		THEN
-			BEGIN
-				RETURN 0;
-            END;
-		ELSE
-			BEGIN
-				RETURN 1;
-            END;
-		END IF;
+	SELECT `password` FROM `User` AS U WHERE U.`user` = `user`;
 END$$
 DELIMITER ;
 
