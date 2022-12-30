@@ -46,19 +46,45 @@ app.get('/login', async (req, res) => {
 
     const { user, password } = req.body;
 
-    db.query(`SELECT validation_User('${user}', '${password}');`, (error, results) => {
+    db.query(`CALL validation_User('${user}');`, (error, results) => {
         if (error) {
             throw error;
-        } else if (objToArr(results[0])[0] === 0) {
-            res.status(400).send('Wrong username or password.');
-        } else if (objToArr(results[0])[0] === 1) {
-            const accessToken = generateAccessToken({ user: user });
-            res.json({ accessToken });
+        } else if (objToArr(results[0]).length === 0) {
+            res.status(400).send('Incorrect user or password.');
         } else {
-            res.status(400).send('Error at login.');
+            const hashedPassword = objToArr(results[0])[0].password;
+            bcrypt.compare(password, hashedPassword, (error, result) => {
+                if (result) {
+                    const accessToken = generateAccessToken({ user: user });
+                    res.status(200).json({ message: "User logged in.", accessToken });
+                } else {
+                    res.status(400).send('Incorrect user or password.');
+                }
+            });
         }
     });
 });
+
+app.get('/register', async (req, res) => {
+
+    const { user, password } = req.body
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    db.query(`SELECT insert_User('${user}', '${hashedPassword}');`, (error, results) => {
+        if (error) {
+            throw error;
+        } else if (objToArr(results[0])[0] === 1) {
+            res.send('User already exists.');
+        }
+        else if (objToArr(results[0])[0] === 0) {
+            const accessToken = generateAccessToken({ user: user });
+            res.status(200).json({ message: "User created.", accessToken });
+        } else {
+            res.status(400).send('Error at register.');
+        }
+    });
+})
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
