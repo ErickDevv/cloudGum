@@ -42,7 +42,7 @@ generateAccessToken = (user) => {
     );
 }
 
-app.get('/login', async (req, res) => {
+app.post('/login', async (req, res) => {
 
     const { user, password } = req.body;
 
@@ -65,7 +65,7 @@ app.get('/login', async (req, res) => {
     });
 });
 
-app.get('/register', async (req, res) => {
+app.post('/register', async (req, res) => {
 
     const { user, password } = req.body
     const salt = await bcrypt.genSalt();
