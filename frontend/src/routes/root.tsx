@@ -13,8 +13,6 @@ const Root = () => {
     const navigate = useNavigate()
 
     const handleSubmit = () => {
-        console.log(route);
-
         fetch(`${route}/login`, {
             method: 'POST',
             headers: {
@@ -25,14 +23,20 @@ const Root = () => {
                 password,
             })
         })
-            .then((res) => { res.ok ? navigate('/dashboard') : alert('Invalid credentials') })
+            .then((res) => {
+                res.ok ? (
+                    navigate('/dashboard'),
+                    localStorage.setItem('token', res.headers.get('accessToken') as string),
+                    user == "",
+                    password == ""
+                ) : alert('Invalid credentials')
+            })
     }
 
     return <>
         <div className='lrcontainer'>
-
             <form className='lrform' action="" onSubmit={e => e.preventDefault()}>
-            <h1>Login</h1>
+                <h1>Login</h1>
                 <input type="text" placeholder="Username" className='lrinput' onChange={() => {
                     setUser((document.querySelector('.user') as HTMLInputElement).value)
                 }} />

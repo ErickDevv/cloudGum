@@ -2,8 +2,6 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 
-const route = import.meta.env.VITE_URL
-
 const Register = () => {
 
     const [user, setUser] = useState('')
@@ -12,7 +10,7 @@ const Register = () => {
     const navigate = useNavigate()
 
     const handleSubmit = () => {
-        fetch(`${route}/register`, {
+        fetch(`/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +20,19 @@ const Register = () => {
                 password,
             })
         })
-            .then((res) => { res.ok ? navigate('/dashboard') : alert('Invalid credentials') })
+            .then((res) => {
+                res.json().then((data) => {
+                    data.accessToken ? (
+                        navigate('/dashboard'),
+                        localStorage.setItem('token', data.accessToken),
+                        user == "",
+                        password == ""
+                    ) : alert(data.message  )
+                })
+            }
+            )
+
+            
     }
 
 
@@ -31,9 +41,13 @@ const Register = () => {
         <div className="lrcontainer">
             <form className="lrform" action="" onSubmit={e => e.preventDefault()}>
                 <h1>Register</h1>
-                <input type="text" placeholder="Username" className='lrinput' />
-                <input type="password" placeholder="Password" className='lrpassword lrinput' />
-                <button className="lrbutton" type="submit">Register</button>
+                <input type="text" placeholder="Username" className='register_user lrinput' onChange={() => {
+                    setUser((document.querySelector('.register_user') as HTMLInputElement).value)
+                }} />
+                <input type="password" placeholder="Password" className='register_password lrpassword lrinput' onChange={() => {
+                    setPassword((document.querySelector('.register_password') as HTMLInputElement).value)
+                }} />
+                <button className="lrbutton" type="submit" onClick={handleSubmit}>Register</button>
                 <p>Already have an account? <Link to="/">Login</Link></p>
             </form>
         </div>
