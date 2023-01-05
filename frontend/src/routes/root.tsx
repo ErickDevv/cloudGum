@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
+import './login_register.css'
+
 const route = import.meta.env.VITE_URL
 
 const Root = () => {
@@ -12,7 +14,7 @@ const Root = () => {
 
     const handleSubmit = () => {
         console.log(route);
-        
+
         fetch(`${route}/login`, {
             method: 'POST',
             headers: {
@@ -27,17 +29,20 @@ const Root = () => {
     }
 
     return <>
-        <h1>Login</h1>
-        <form action="" onSubmit={e => e.preventDefault()}>
-            <input type="text" placeholder="Username" className='user' onChange={() => {
-                setUser((document.querySelector('.user') as HTMLInputElement).value)
-            }} />
-            <input type="password" placeholder="Password" className='password' onChange={() => {
-                setPassword((document.querySelector('.password') as HTMLInputElement).value)
-            }} />
-            <button type="submit" onClick={handleSubmit}>Login</button>
-            <p>Don't have an account? <Link to="/register"></Link></p>
-        </form>
+        <div className='lrcontainer'>
+
+            <form className='lrform' action="" onSubmit={e => e.preventDefault()}>
+            <h1>Login</h1>
+                <input type="text" placeholder="Username" className='lrinput' onChange={() => {
+                    setUser((document.querySelector('.user') as HTMLInputElement).value)
+                }} />
+                <input type="password" placeholder="Password" className='lrpassword lrinput' onChange={() => {
+                    setPassword((document.querySelector('.password') as HTMLInputElement).value)
+                }} />
+                <button className='lrbutton' type="submit" onClick={handleSubmit}>Login</button>
+                <p>Don't have an account? <Link to="/register">Register</Link></p>
+            </form>
+        </div>
     </>
 }
 

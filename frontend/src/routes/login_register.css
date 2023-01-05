@@ -1,0 +1,62 @@
+.lrcontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../../public/background.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.lrform {
+    background: rgba(67, 67, 67, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 350px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: white;
+}
+
+.lrinput {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 400px;
+    height: 45px;
+}
+
+.lrpassword {
+    margin-top: 20px;
+}
+
+.lrinput::placeholder {
+    color: white;
+    font-size: 20px;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.lrbutton {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 400px;
+    height: 45px;
+    margin-top: 20px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: white;
+}

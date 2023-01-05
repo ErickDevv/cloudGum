@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const route = import.meta.env.VITE_URL
 
-const register = () => {
+const Register = () => {
 
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
@@ -27,14 +28,17 @@ const register = () => {
 
 
     return <>
-        <h1>Register</h1>
-        <form action="" onSubmit={e => e.preventDefault()}>
-            <input type="text" placeholder="Username" className='user' />
-            <input type="password" placeholder="Password" className='password' />
-            <button type="submit">Register</button>
-        </form>
+        <div className="lrcontainer">
+            <form className="lrform" action="" onSubmit={e => e.preventDefault()}>
+                <h1>Register</h1>
+                <input type="text" placeholder="Username" className='lrinput' />
+                <input type="password" placeholder="Password" className='lrpassword lrinput' />
+                <button className="lrbutton" type="submit">Register</button>
+                <p>Already have an account? <Link to="/">Login</Link></p>
+            </form>
+        </div>
     </>
 }
 
 
-export default register
+export default Register
