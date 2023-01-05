@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 
 import './login_register.css'
 
-const route = import.meta.env.VITE_URL
-
 const Root = () => {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
@@ -13,7 +11,7 @@ const Root = () => {
     const navigate = useNavigate()
 
     const handleSubmit = () => {
-        fetch(`${route}/login`, {
+        fetch(`/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -24,12 +22,14 @@ const Root = () => {
             })
         })
             .then((res) => {
-                res.ok ? (
-                    navigate('/dashboard'),
-                    localStorage.setItem('token', res.headers.get('accessToken') as string),
-                    user == "",
-                    password == ""
-                ) : alert('Invalid credentials')
+                res.json().then((data) => {
+                    data.accessToken ? (
+                        navigate('/dashboard'),
+                        localStorage.setItem('token', data.accessToken),
+                        user == "",
+                        password == ""
+                    ) : alert(data.message)
+                })
             })
     }
 
@@ -37,11 +37,11 @@ const Root = () => {
         <div className='lrcontainer'>
             <form className='lrform' action="" onSubmit={e => e.preventDefault()}>
                 <h1>Login</h1>
-                <input type="text" placeholder="Username" className='lrinput' onChange={() => {
-                    setUser((document.querySelector('.user') as HTMLInputElement).value)
+                <input type="text" placeholder="Username" className='login_user lrinput' onChange={() => {
+                    setUser((document.querySelector('.login_user') as HTMLInputElement).value)
                 }} />
-                <input type="password" placeholder="Password" className='lrpassword lrinput' onChange={() => {
-                    setPassword((document.querySelector('.password') as HTMLInputElement).value)
+                <input type="password" placeholder="Password" className='login_password lrpassword lrinput' onChange={() => {
+                    setPassword((document.querySelector('.login_password') as HTMLInputElement).value)
                 }} />
                 <button className='lrbutton' type="submit" onClick={handleSubmit}>Login</button>
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
