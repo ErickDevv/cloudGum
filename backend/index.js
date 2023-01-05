@@ -50,7 +50,7 @@ app.post('/login', async (req, res) => {
         if (error) {
             throw error;
         } else if (objToArr(results[0]).length === 0) {
-            res.status(400).send('Incorrect user or password.');
+            res.status(400).send({ message: "Incorrect user or password." });
         } else {
             const hashedPassword = objToArr(results[0])[0].password;
             bcrypt.compare(password, hashedPassword, (error, result) => {
@@ -58,7 +58,7 @@ app.post('/login', async (req, res) => {
                     const accessToken = generateAccessToken({ user: user });
                     res.status(200).json({ message: "User logged in.", accessToken });
                 } else {
-                    res.status(400).send('Incorrect user or password.');
+                    res.status(400).send({ message: "Incorrect user or password." });
                 }
             });
         }
