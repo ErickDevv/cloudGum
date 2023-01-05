@@ -75,13 +75,11 @@ app.post('/register', async (req, res) => {
         if (error) {
             throw error;
         } else if (objToArr(results[0])[0] === 1) {
-            res.send('User already exists.');
+            res.send({ message: "User already exists." });
         }
         else if (objToArr(results[0])[0] === 0) {
             const accessToken = generateAccessToken({ user: user });
-            res.status(200).json({ message: "User created.", accessToken });
-        } else {
-            res.status(400).send('Error at register.');
+            res.status(200).json({ message: "User created", accessToken });
         }
     });
 })
