@@ -1,5 +1,5 @@
 :root {
-    background-image: url(../../public/background.jpg);
+    background-image: url(../../public/bg_2.jpg);
 }
 
 .dashnav {
@@ -15,6 +15,14 @@
     font-family: sans-serif;
     color: white;
     padding: 0 20px;
+}
+
+@media screen and (max-width: 1070px) {
+    .dashnav {
+        flex-direction: column;
+        height: auto;
+        padding-bottom: 10px;
+    }
 }
 
 .dashnav h1 {
@@ -37,12 +45,35 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .dashupload p {
     font-size: 20px;
     font-family: sans-serif;
     color: white;
+    font-weight: bold;
+}
+
+.dashinputcontainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.dashuploadbuttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 702px) {
+    .dashuploadbuttons {
+        padding-top: 20px;
+    }
 }
 
 .dashupload div input {
@@ -59,7 +90,13 @@
     margin: 0 15px;
 }
 
-.dashrefreshbutton{
+@media screen and (max-width: 450px) {
+    .dashupload div input {
+        width: 300px;
+    }
+}
+
+.dashrefreshbutton {
     margin-left: 15px;
 }
 

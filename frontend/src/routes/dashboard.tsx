@@ -63,13 +63,15 @@ const Dashboard = () => {
         <nav className='dashnav'>
             <h1>Dashboard</h1>
             <div className='dashupload'>
-                <p>Upload a file</p>
+                <p>UPLOAD</p>
                 <div className='dashinputcontainer'>
-                    <input className='dashinputcontainer' type="file" onChange={fileOnChange} />
-                    <button className='dashuploadbutton' onClick={sendFile}>Send</button>
-                    <button className='dashrefreshbutton' onClick={() => {
-                        getFiles();
-                    }}>Refresh</button>
+                    <input type="file" onChange={fileOnChange} />
+                    <div className='dashuploadbuttons'>
+                        <button className='dashuploadbutton' onClick={sendFile}>Send</button>
+                        <button className='dashrefreshbutton' onClick={() => {
+                            getFiles();
+                        }}>Refresh</button>
+                    </div>
                 </div>
             </div>
         </nav>
