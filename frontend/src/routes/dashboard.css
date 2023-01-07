@@ -1,0 +1,109 @@
+:root {
+    background-image: url(../../public/background.jpg);
+}
+
+.dashnav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 75px;
+    border-radius: 10px;
+    background: rgba(67, 67, 67, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    font-family: sans-serif;
+    color: white;
+    padding: 0 20px;
+}
+
+.dashnav h1 {
+    font-size: 30px;
+}
+
+.dashnav button {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100px;
+    height: 45px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: white;
+}
+
+.dashupload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashupload p {
+    font-size: 20px;
+    font-family: sans-serif;
+    color: white;
+}
+
+.dashupload div input {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 400px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    margin: 0 15px;
+}
+
+.dashrefreshbutton{
+    margin-left: 15px;
+}
+
+.files {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(67, 67, 67, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 200px;
+    width: auto;
+    padding-bottom: 10px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.file p {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.file button {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 150px;
+    height: 45px;
+    font-family: sans-serif;
+    font-size: 20px;
+    color: white;
+}
