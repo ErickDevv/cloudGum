@@ -108,7 +108,7 @@ DELIMITER $$
 USE `cloudGum`$$
 CREATE PROCEDURE `file_User` (in inUser CHAR(32))
 BEGIN
-	SELECT U.`user` AS Usuario, F.`name` AS Nombre, F.url AS URL FROM `User` AS U
+	SELECT F.`name` FROM `User` AS U
 	INNER JOIN User_Has_File AS UHF
 	ON UHF.idUser = U.idUser
 	INNER JOIN `File` AS F
