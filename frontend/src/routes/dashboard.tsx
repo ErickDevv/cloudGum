@@ -3,7 +3,7 @@ import "./dashboard.css"
 
 const Dashboard = () => {
 
-    const [files, setFiles] = useState(["ddheuishduiodjoijdwokjdisoa s", "dsa"])
+    const [files, setFiles] = useState([])
     const [file, setFile] = useState("")
 
     useEffect(() => {
@@ -23,7 +23,6 @@ const Dashboard = () => {
                 "x-access-token": localStorage.getItem('token')
             }
         }).then(res => res.blob().then(res => {
-            //download file
             const url = window.URL.createObjectURL(new Blob([res]));
             const link = document.createElement('a');
             link.href = url;

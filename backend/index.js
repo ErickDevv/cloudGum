@@ -62,12 +62,11 @@ app.get('/getFiles', isAuthenticated, (req, res) => {
         if (error) {
             throw error;
         } else {
-            let arr = [];
-            let arrGen = objToArr(results[0]);
-            objToArr(arrGen).forEach(element => {
-                arr.push(objToArr(element)[1]);
+            let arrGen = [];
+            objToArr(objToArr(results[0])).forEach((file, index) => {
+                arrGen.push(file.name);
             });
-            res.json(arr);
+            res.json(arrGen);
         }
     });
 });
@@ -117,9 +116,7 @@ app.post('/upload', isAuthenticated, upload, (req, res) => {
 
     const fileName = req.file.filename;
 
-    const path = req.file.path;
-
-    const query = `select insert_File('${user}', '${fileName}', '${path}');`;
+    const query = `select insert_File('${user}', '${fileName}', '');`;
 
     db.query(query, (error, results) => {
         if (error) {
